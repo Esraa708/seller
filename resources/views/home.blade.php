@@ -17,38 +17,55 @@
                 <div class="card article-card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-8">
+                            <div class="col-12">
                                 <h2>{{ $product->name}}</h2>
-                                <!-- <h2>$product-</h2> -->
-                            </div>
-                            <div class="col-1">
-                                <a href="{{url('/articles',$article->id)}}"> <span class="d-block mt-1"> <i class="fa fa-eye"></i> </span></a>
-                            </div>
-                            <div class="col-2">
-                                <a href="{{url('/articles/'.$article->id.'/edit')}}"> <span class="d-block mt-1"> <i class="fa fa-edit"></i> </span></a>
                             </div>
                         </div>
-
-
-                       
-
                     </div>
 
                     <div class="card-body body">
-
-                        <p>{{$article->content}}</p>
-
+                        <p>Brand:-{{$product->brand}}</p>
+                        <p>Country:-{{$product->countery}}</p>
+                        <p>Price:-{{$product->price}}</p>
+                        <p>quantity:-{{$product->quantity}}</p>
+                        <p>SKU:-{{$product->sku}}</p>
+                        <!-- <p>Description:-{{$product->description}}</p> -->
+                        <p>price:-{{$product->price}}</p>
+                        <!-- <p>SKU:-{{$product->sku}}</p> -->
+                        <!-- @if($product->matrial)
+                        <p>Matrial:-{{$product->matrial}}</p>
+                        @endif
+                        @if($product->weight)
+                        <p>weight:-{{$product->weight}}</p>
+                        @endif
+                        @if($product->dimensions)
+                        <p>diminsions:-{{$product->dimensions}}</p>
+                        @endif -->
+                        <div class="row">
+                            <div class="col-4">
+                                <a class="btn btn-success" href="{{url('/product',$product->id)}}">show</a>
+                            </div>
+                            <div class="col-3">
+                                <a class="btn btn-primary" href="{{url('/product/'.$product->id.'/edit')}}">edit</a>
+                            </div>
+                            <div class="col-3">
+                                <form action=" {!! action('AddProduct@destroy',$product->id) !!}" method="POST">
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">delete</button>
+                                </form>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
+        <div class="d-flex flex-column align-items-center justifiy-content-center">
+            {{ $products->links() }}
+        </div>
+    </div>
 
-    </div>
-    <div class="d-flex flex-column align-items-center justifiy-content-center">
-        {{ $products->links() }}
-    </div>
 
 </body>
 

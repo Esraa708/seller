@@ -40,6 +40,7 @@ class AddProductValidation extends FormRequest
             'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'attrs' => 'required',
         ];
+       
         foreach (json_decode($this->attrs) as $key => $value) {
             $attribute_val = $value->name;
             switch ($attribute_val) {
@@ -56,14 +57,5 @@ class AddProductValidation extends FormRequest
         }
         return $rules;
     }
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json(
-            [
-                'errors' => $validator->errors(),
-                'status' => false
-            ],
-            400
-        ));
-    }
+   
 }

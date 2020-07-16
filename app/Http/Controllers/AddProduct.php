@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Attribute;
+use App\AttributeValue;
 use App\Http\Requests\AddProductValidation;
 use App\Product;
 use App\ProductImg;
@@ -18,9 +19,8 @@ class AddProduct extends Controller
     public function index()
     {
 
-        $products = Product::with('attributes')->get();//or paginate
-        dd($products);
-        return response([
+        $products = Product::with('attributes')->paginate(4);
+        return view('home', [
             'products' => $products
         ]);
     }
@@ -44,6 +44,68 @@ class AddProduct extends Controller
     public function store(AddProductValidation $request)
     {
         $product = new Product();
+        $this->storeOrUpadte($product, $request);
+        return redirect('/product');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $product = Product::find($id);
+        $atrributes = Product::find($id)->attributes()->get();
+        $imgs = Product::find($id)->imgs;
+        return view('editProduct', [
+            'product' => $product,
+            'attributes' => $atrributes,
+            'imgs' => $imgs
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(AddProductValidation $request, $id)
+    {
+        $product = Product::find($id);
+        $this->storeOrUpadte($product, $request);
+        return response('product updated successfully', 200);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $product = Product::find($id);
+        $product->attributes()->detach();
+        $product->categories()->detach();
+        $product->delete();
+        return redirect('/product');
+    }
+    public function storeOrUpadte(Product $product, AddProductValidation $request)
+    {
         $product->name = $request->name;
         $product->price = $request->price;
         $product->brand = $request->brand;
@@ -79,51 +141,5 @@ class AddProduct extends Controller
             $product->categories()->attach($atrribute->subCategories[0]->category->id);
             $product->attributes()->attach($atrribute->id, ['value' => $request->dimensions]);
         }
-        return response('product added successfully', 200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $product = Product::find($id)->attributes;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

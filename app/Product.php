@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -27,6 +28,13 @@ class Product extends Model
     //product attribute many to many relationship
     public function attributes()
     {
-        return $this->belongsToMany('App\Product', 'attribute_value', 'product_id','attribute_id');
+        return $this->belongsToMany('App\Attribute', 'attribute_value', 'product_id','attribute_id')->withPivot('value');
+    }
+    public function delete()
+    {
+        DB::transaction(function () {
+            $this->imgs()->delete();
+            parent::delete();
+        });
     }
 }

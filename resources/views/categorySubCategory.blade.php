@@ -10,7 +10,7 @@
 
 <body>
     <div class="container">
-        <form action=" {!! action('CategorySubCategory@create') !!}" method="POST">
+        <form action=" {!! action('CategorySubCategory@create') !!}" method="GET">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">

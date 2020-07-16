@@ -25,7 +25,7 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
 
-Route::post('addproduct', 'CategorySubCategory@create')->middleware( 'auth');
+Route::get('addproduct', 'CategorySubCategory@create')->middleware( 'auth');
 Route::get('selectcategory', 'CategorySubCategory@createCategories')->middleware('auth');
 Route::get('selectSubcategory/{id}', 'CategorySubCategory@bringSubCategories')->middleware('auth');
 Route::resource('product', 'AddProduct')->middleware('auth');

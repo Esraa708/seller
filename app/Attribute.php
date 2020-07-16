@@ -11,7 +11,7 @@ class Attribute extends Model
     //attributeproduct many to many relation
     public function products()
     {
-        return $this->belongsToMany('App\Product', 'attribute_value', 'attribute_id', 'product_id');
+        return $this->belongsToMany('App\Product', 'attribute_value', 'attribute_id', 'product_id')->withPivot('value');
     }
     //attribute and subcategroy many to many relation
     public function subCategories()

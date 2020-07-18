@@ -53,6 +53,9 @@ class AddProductValidation extends FormRequest
                 case "dimensions":
                     $rules['dimensions'] = 'required';
                     break;
+                case "size":
+                    $rules['sizecolor.*']='required'  ;
+                break;  
             }
         }
         return $rules;

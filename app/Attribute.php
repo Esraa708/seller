@@ -13,6 +13,11 @@ class Attribute extends Model
     {
         return $this->belongsToMany('App\Product', 'attribute_value', 'attribute_id', 'product_id')->withPivot('value');
     }
+    //attributeproduct many to many relation
+    public function colors()
+    {
+        return $this->belongsToMany('App\Product', 'attribute_value', 'attribute_id', 'color__id')->withPivot('value');
+    }
     //attribute and subcategroy many to many relation
     public function subCategories()
     {

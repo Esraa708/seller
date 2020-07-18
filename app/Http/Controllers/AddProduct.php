@@ -43,6 +43,8 @@ class AddProduct extends Controller
      */
     public function store(AddProductValidation $request)
     {
+        // dd($request->all());
+
         $product = new Product();
         $this->storeOrUpadte($product, $request);
         return redirect('/product');
@@ -140,6 +142,19 @@ class AddProduct extends Controller
             $atrribute = Attribute::where('name', 'dimensions')->first();
             $product->categories()->attach($atrribute->subCategories[0]->category->id);
             $product->attributes()->attach($atrribute->id, ['value' => $request->dimensions]);
+        }
+        if ($request->has('sizecolor')) {
+            $sizeColors = json_decode($request->sizecolor);
+            $atrribute = Attribute::where('name', 'size')->first();
+            foreach ($sizeColors as $key => $value) {
+                $isarray= is_array($value);
+                if (is_array($value->colors) == true) {
+                     //looping through $color array
+                    foreach ($value->colors as $color) {
+                        $product->attributes()->attach($atrribute->id, ['value' => $value->size, 'color_id' => $color]);
+                    }
+                }
+            }
         }
     }
 }
